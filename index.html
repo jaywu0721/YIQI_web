@@ -2056,9 +2056,13 @@
         });
 
         // Teaser Form submission handler
+        // ===== Formspree 表單送出處理 =====
+        const FORMSPREE_URL = 'https://formspree.io/f/mzdjyreo';
+
+        // 新建案預告登記表單
         const teaserForm = document.getElementById('teaserForm');
         if (teaserForm) {
-            teaserForm.addEventListener('submit', (e) => {
+            teaserForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const name = teaserForm.querySelector('[name="name"]').value.trim();
                 const phone = teaserForm.querySelector('[name="phone"]').value.trim();
@@ -2066,15 +2070,50 @@
                     alert('請填寫姓名與聯絡電話。');
                     return;
                 }
-                alert(`感謝您的登記，${name}！\n鷁欣建設將在新建案公開時，第一時間以電話 ${phone} 通知您。`);
-                teaserForm.reset();
+                // 收集複選總價
+                const prices = [...teaserForm.querySelectorAll('[name="price"]:checked')].map(cb => cb.value);
+                // 收集複選房型
+                const rooms = [...teaserForm.querySelectorAll('[name="room"]:checked')].map(cb => cb.value);
+                const email = teaserForm.querySelector('[name="email"]').value.trim();
+
+                const submitBtn = teaserForm.querySelector('button[type="submit"]');
+                submitBtn.textContent = '傳送中...';
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch(FORMSPREE_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({
+                            '表單類型': '新建案預告登記',
+                            '姓名': name,
+                            '電話': phone,
+                            '信箱': email || '未填寫',
+                            '可接受總價': prices.length > 0 ? prices.join('、') : '未選擇',
+                            '感興趣房型': rooms.length > 0 ? rooms.join('、') : '未選擇',
+                            '_subject': '【鬱欣建設】新建案預告登記 - ' + name
+                        })
+                    });
+                    if (response.ok) {
+                        alert(`感謝您的登記，${name}！
+鬱欣建設將在新建案公開時，第一時間以電話 ${phone} 通知您。`);
+                        teaserForm.reset();
+                    } else {
+                        throw new Error('Server error');
+                    }
+                } catch (err) {
+                    alert('傳送失敗，請直接撥打電話聯絡我們。抓歉不便！');
+                } finally {
+                    submitBtn.textContent = '立即登記 · 搶先獲取資訊';
+                    submitBtn.disabled = false;
+                }
             });
         }
 
-        // Contact Form submission handler
+        // 聯絡我們表單
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
+            contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const name = contactForm.querySelector('[name="name"]').value.trim();
                 const phone = contactForm.querySelector('[name="phone"]').value.trim();
@@ -2082,8 +2121,38 @@
                     alert('請填寫姓名與聯絡電話。');
                     return;
                 }
-                alert(`感謝您的諮詢！我們會盡快與您聯繫。`);
-                contactForm.reset();
+                const interest = contactForm.querySelector('[name="interest"]')?.value || '';
+                const message = contactForm.querySelector('[name="message"]')?.value.trim() || '';
+
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                submitBtn.textContent = '傳送中...';
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch(FORMSPREE_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({
+                            '表單類型': '聯絡我們',
+                            '姓名': name,
+                            '電話': phone,
+                            '諮詢項目': interest || '未選擇',
+                            '留言內容': message || '無',
+                            '_subject': '【鬱欣建設】聯絡諮詢 - ' + name
+                        })
+                    });
+                    if (response.ok) {
+                        alert('感謝您的諮詢！我們會盡快與您聯絡。');
+                        contactForm.reset();
+                    } else {
+                        throw new Error('Server error');
+                    }
+                } catch (err) {
+                    alert('傳送失敗，請直接撥打電話聯絡我們。抓歉不便！');
+                } finally {
+                    submitBtn.textContent = '送出諮詢';
+                    submitBtn.disabled = false;
+                }
             });
         }
 
