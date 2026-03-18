@@ -581,6 +581,41 @@
             background: #2d3e3e;
             color: var(--white);
         }
+        /* 複選框群組 */
+        .teaser-checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .teaser-checkbox-group .group-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.55);
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+        .checkbox-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .checkbox-item span {
+            font-size: 14px;
+            color: rgba(255,255,255,0.85);
+            white-space: nowrap;
+        }
 
         .teaser-form-btn {
             width: 100%;
@@ -1398,7 +1433,7 @@
                 <li role="none"><a href="#about" role="menuitem">關於我們</a></li>
                 <li role="none"><a href="#service" role="menuitem">售後服務</a></li>
                 <li role="none"><a href="#news" role="menuitem">最新消息</a></li>
-                <li role="none"><a href="#contact" class="nav-cta-btn" role="menuitem">預約諮詢</a></li>
+                <li role="none"><a href="#contact" class="nav-cta-btn" role="menuitem">聯絡我們</a></li>
             </ul>
 
             <div class="mobile-menu-btn" id="mobileMenuBtn" aria-label="開啟選單" role="button" tabindex="0">
@@ -1486,12 +1521,26 @@
                     <input type="text" name="name" placeholder="您的姓名 *" required aria-label="姓名">
                     <input type="tel" name="phone" placeholder="聯絡電話 *" required aria-label="聯絡電話">
                     <input type="email" name="email" placeholder="電子信箱（選填）" aria-label="電子信箱">
-                    <select name="interest" aria-label="感興趣的房型">
-                        <option value="" disabled selected>感興趣的房型</option>
-                        <option value="透天別墅">透天別墅</option>
-                        <option value="大樓住宅">大樓住宅</option>
-                        <option value="不限">不限，以建案為主</option>
-                    </select>
+                    <!-- 總價範圍複選 -->
+                    <div class="teaser-checkbox-group">
+                        <p class="group-label">可接受總價範圍（可複選）</p>
+                        <div class="checkbox-row">
+                            <label class="checkbox-item"><input type="checkbox" name="price" value="1400萬"><span>1,400萬</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="price" value="1600萬"><span>1,600萬</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="price" value="1800萬"><span>1,800萬</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="price" value="2000萬"><span>2,000萬</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="price" value="2200萬"><span>2,200萬</span></label>
+                        </div>
+                    </div>
+                    <!-- 房型複選 -->
+                    <div class="teaser-checkbox-group">
+                        <p class="group-label">感興趣的房型（可複選）</p>
+                        <div class="checkbox-row">
+                            <label class="checkbox-item"><input type="checkbox" name="room" value="2房"><span>2 房</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="room" value="3房"><span>3 房</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="room" value="4房"><span>4 房</span></label>
+                        </div>
+                    </div>
                     <button type="submit" class="teaser-form-btn">立即登記 · 搶先獲取資訊</button>
                 </form>
                 <p class="teaser-privacy">您的個人資料僅供鷁欣建設聯繫使用，不會提供予第三方。</p>
@@ -1549,7 +1598,7 @@
                             </div>
                             <div class="project-info-item">
                                 <span class="project-info-label">預計交屋：</span>
-                                <span>2025年6月</span>
+                                <span>2026年6月</span>
                             </div>
                         </div>
                         <span class="project-status building">興建中</span>
@@ -1807,7 +1856,7 @@
                 掃描 QR Code 或點擊按鈕，加入 LINE 官方帳號，即可快速聯繫我們。
             </p>
             <div class="line-cta-buttons">
-                <a href="https://line.me/R/ti/p/@yisinconstruction" class="line-btn" target="_blank" rel="noopener noreferrer" aria-label="加入鷁欣建設LINE官方帳號">
+                <a href="https://line.me/R/ti/p/%40255kmxwr" class="line-btn" target="_blank" rel="noopener noreferrer" aria-label="加入鷁欣建設LINE官方帳號">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
                     點擊加入 LINE
                 </a>
@@ -1877,14 +1926,14 @@
                     <div class="contact-icon" aria-hidden="true">💬</div>
                     <div class="contact-details">
                         <h4>LINE 官方帳號</h4>
-                        <p>掃描 QR Code 或搜尋 LINE ID 加入好友<br>
-                        <a href="https://line.me/R/ti/p/@yisinconstruction" target="_blank" rel="noopener noreferrer" style="color: #06c755; font-weight: 600; text-decoration: none;">點擊加入 LINE 官方帳號 →</a></p>
+                        <p>搜尋 LINE ID：<strong style="color:#06c755;">@255kmxwr</strong> 或揃描 QR Code<br>
+                        <a href="https://line.me/R/ti/p/%40255kmxwr" target="_blank" rel="noopener noreferrer" style="color: #06c755; font-weight: 600; text-decoration: none;">點擊加入 LINE 官方帳號 →</a></p>
                     </div>
                 </div>
             </div>
 
             <div class="contact-form">
-                <h3>預約諮詢</h3>
+                <h3>聯絡我們</h3>
                 <form id="contactForm" novalidate>
                     <div class="form-group">
                         <label for="contact-name">您的姓名 *</label>
