@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- 首頁 -->
+  <url>
+    <loc>https://yisin-web-git-main-jaywu0721s-projects.vercel.app/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 新建案預告 -->
+  <url>
+    <loc>https://yisin-web-git-main-jaywu0721s-projects.vercel.app/#teaser</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 建案作品 -->
+  <url>
+    <loc>https://yisin-web-git-main-jaywu0721s-projects.vercel.app/#projects</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 關於我們 -->
+  <url>
+    <loc>https://yisin-web-git-main-jaywu0721s-projects.vercel.app/#about</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 售後服務 -->
+  <url>
+    <loc>https://yisin-web-git-main-jaywu0721s-projects.vercel.app/#service</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 最新消息 -->
+  <url>
+    <loc>https://yisin-web-git-main-jaywu0721s-projects.vercel.app/#news</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 聯絡我們 -->
+  <url>
+    <loc>https://yisin-web-git-main-jaywu0721s-projects.vercel.app/#contact</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
