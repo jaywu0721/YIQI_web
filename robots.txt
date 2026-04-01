@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap 位置
-Sitemap: https://yisin-web.vercel.app/sitemap.xml
+Sitemap: https://yiqi-web.vercel.app/sitemap.xml
