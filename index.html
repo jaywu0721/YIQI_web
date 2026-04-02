@@ -1110,11 +1110,29 @@
             margin: 0 auto;
         }
 
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 36px;
+        /* ===== News Carousel ===== */
+        .news-carousel-wrapper {
+            position: relative;
             margin-top: 60px;
+        }
+
+        .news-carousel-track-outer {
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .news-grid {
+            display: flex;
+            gap: 36px;
+            transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .news-grid.dragging {
+            cursor: grabbing;
+            transition: none;
         }
 
         .news-card {
@@ -1122,11 +1140,12 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
+            transition: box-shadow 0.3s ease;
+            flex: 0 0 calc((100% - 72px) / 3);
+            min-width: 0;
         }
 
         .news-card:hover {
-            transform: translateY(-8px);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
         }
 
@@ -1165,6 +1184,80 @@
             font-size: 14px;
             color: var(--text-light);
             line-height: 1.8;
+        }
+
+        /* 輪播控制按鈕 */
+        .news-carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--white);
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s ease;
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+
+        .news-carousel-btn:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        .news-carousel-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .news-carousel-btn.prev {
+            left: -24px;
+        }
+
+        .news-carousel-btn.next {
+            right: -24px;
+        }
+
+        /* 分頁指示點 */
+        .news-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 36px;
+        }
+
+        .news-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.15);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .news-dot.active {
+            width: 28px;
+            border-radius: 4px;
+            background: var(--primary-color);
+        }
+
+        /* 消息計數 */
+        .news-counter {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-light);
+            letter-spacing: 1px;
         }
 
         /* ===== Contact Section ===== */
@@ -1465,7 +1558,8 @@
 
             .advantages-container { grid-template-columns: 1fr; }
             .projects-grid { grid-template-columns: 1fr; }
-            .news-grid { grid-template-columns: 1fr; }
+            .news-card { flex: 0 0 100%; }
+            .news-carousel-btn { display: none; }
 
             .section-title { font-size: 32px; }
             .section-subtitle { font-size: 16px; margin-bottom: 50px; }
@@ -1845,24 +1939,34 @@
         <div class="news-container">
             <h2 class="section-title">最新消息</h2>
             <p class="section-subtitle">掌握鷁崎建設的最新動態與建案資訊</p>
-            <div class="news-grid">
-                <article class="news-card">
-                    <div class="news-image">建案動態</div>
-                    <div class="news-content">
-                        <div class="news-date">2026年03月01日</div>
-                        <h3 class="news-title">鷁崎緻鄰 興建進度更新</h3>
-                        <p class="news-excerpt">位於新竹市香山區瑞光街195號的「鷁崎緻鄰」目前正積極施工中，共24戶精品住宅，預計2026年7月完工交屋，歡迎來電洽詢。</p>
+
+            <div class="news-carousel-wrapper">
+                <button class="news-carousel-btn prev" id="newsCarouselPrev" aria-label="上一則消息">❮</button>
+                <div class="news-carousel-track-outer">
+                    <div class="news-grid" id="newsCarouselTrack">
+                        <article class="news-card">
+                            <div class="news-image">建案動態</div>
+                            <div class="news-content">
+                                <div class="news-date">2026年03月01日</div>
+                                <h3 class="news-title">鷁崎緬鄰 興建進度更新</h3>
+                                <p class="news-excerpt">位於新竹市香山區瑞光街195號的「鷁崎緬鄰」目前正積極施工中，則24戶精品住宅，預脈2026年7月完工交屋，歡迎來電洽詢。</p>
+                            </div>
+                        </article>
+                        <article class="news-card">
+                            <div class="news-image">公司動態</div>
+                            <div class="news-content">
+                                <div class="news-date">2026年01月01日</div>
+                                <h3 class="news-title">感謝13年來的支持與信任</h3>
+                                <p class="news-excerpt">鷁崎建設自民國102年創立至今，深耕新竹13年，完成4個優質建案、服務逾百戶家庭。感謝每一位住戶的信任，我們將持續以品質回報。</p>
+                            </div>
+                        </article>
                     </div>
-                </article>
-                <article class="news-card">
-                    <div class="news-image">公司動態</div>
-                    <div class="news-content">
-                        <div class="news-date">2026年01月01日</div>
-                        <h3 class="news-title">感謝13年來的支持與信任</h3>
-                        <p class="news-excerpt">鷁崎建設自民國102年創立至今，深耕新竹13年，完成4個優質建案、服務逾百戶家庭。感謝每一位住戶的信任，我們將持續以品質回報。</p>
-                    </div>
-                </article>
+                </div>
+                <button class="news-carousel-btn next" id="newsCarouselNext" aria-label="下一則消息">❯</button>
             </div>
+
+            <div class="news-dots" id="newsCarouselDots"></div>
+            <div class="news-counter" id="newsCarouselCounter"></div>
         </div>
     </section>
 
@@ -1936,6 +2040,152 @@
 
     <!-- ===== JavaScript ===== -->
     <script>
+        // ===== News Carousel =====
+        (function() {
+            const track = document.getElementById('newsCarouselTrack');
+            const prevBtn = document.getElementById('newsCarouselPrev');
+            const nextBtn = document.getElementById('newsCarouselNext');
+            const dotsContainer = document.getElementById('newsCarouselDots');
+            const counter = document.getElementById('newsCarouselCounter');
+
+            if (!track) return;
+
+            function getVisibleCount() {
+                const w = window.innerWidth;
+                if (w < 768) return 1;
+                if (w < 1100) return 2;
+                return 3;
+            }
+
+            let currentIndex = 0;
+            let isDragging = false;
+            let startX = 0;
+            let dragOffset = 0;
+
+            function getCards() {
+                return Array.from(track.querySelectorAll('.news-card'));
+            }
+
+            function getTotalPages() {
+                const cards = getCards();
+                const visible = getVisibleCount();
+                return Math.max(1, cards.length - visible + 1);
+            }
+
+            function getCardWidth() {
+                const cards = getCards();
+                if (!cards.length) return 0;
+                const gap = 36;
+                const outer = track.parentElement;
+                const outerW = outer.offsetWidth;
+                const visible = getVisibleCount();
+                return (outerW - gap * (visible - 1)) / visible;
+            }
+
+            function updateCardWidths() {
+                const cards = getCards();
+                const w = getCardWidth();
+                cards.forEach(c => {
+                    c.style.flex = '0 0 ' + w + 'px';
+                    c.style.width = w + 'px';
+                });
+            }
+
+            function buildDots() {
+                dotsContainer.innerHTML = '';
+                const total = getTotalPages();
+                for (let i = 0; i < total; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'news-dot' + (i === currentIndex ? ' active' : '');
+                    dot.setAttribute('aria-label', '第' + (i + 1) + '頁');
+                    dot.addEventListener('click', () => goTo(i));
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            function updateDots() {
+                const dots = dotsContainer.querySelectorAll('.news-dot');
+                dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+            }
+
+            function updateCounter() {
+                const cards = getCards();
+                const visible = getVisibleCount();
+                const end = Math.min(currentIndex + visible, cards.length);
+                counter.textContent = (currentIndex + 1) + '–' + end + ' / ' + cards.length + ' 則消息';
+            }
+
+            function updateButtons() {
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex >= getTotalPages() - 1;
+            }
+
+            function goTo(index) {
+                const total = getTotalPages();
+                currentIndex = Math.max(0, Math.min(index, total - 1));
+                const cardW = getCardWidth();
+                const gap = 36;
+                const offset = currentIndex * (cardW + gap);
+                track.style.transform = 'translateX(-' + offset + 'px)';
+                updateDots();
+                updateCounter();
+                updateButtons();
+            }
+
+            function init() {
+                updateCardWidths();
+                buildDots();
+                updateCounter();
+                updateButtons();
+                goTo(0);
+            }
+
+            prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
+            nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
+
+            // 鼠標拖曳
+            track.addEventListener('mousedown', e => {
+                isDragging = true;
+                startX = e.clientX;
+                dragOffset = 0;
+                track.classList.add('dragging');
+            });
+            document.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                dragOffset = e.clientX - startX;
+                const cardW = getCardWidth();
+                const gap = 36;
+                const base = currentIndex * (cardW + gap);
+                track.style.transform = 'translateX(' + (-base + dragOffset) + 'px)';
+            });
+            document.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                track.classList.remove('dragging');
+                if (dragOffset < -60) goTo(currentIndex + 1);
+                else if (dragOffset > 60) goTo(currentIndex - 1);
+                else goTo(currentIndex);
+            });
+
+            // 觸控滑動
+            let touchStartX = 0;
+            track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            track.addEventListener('touchend', e => {
+                const diff = touchStartX - e.changedTouches[0].clientX;
+                if (diff > 50) goTo(currentIndex + 1);
+                else if (diff < -50) goTo(currentIndex - 1);
+            }, { passive: true });
+
+            // 視窗調整
+            window.addEventListener('resize', () => {
+                updateCardWidths();
+                buildDots();
+                goTo(Math.min(currentIndex, getTotalPages() - 1));
+            });
+
+            init();
+        })();
+
         // Tab Switching Function
         function switchTab(event, tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
